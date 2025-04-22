@@ -128,13 +128,19 @@ ws.onmessage = (event) => {
 	activity.ok();
 	lastEvent = Date.now();
 
-	const messageRecord = new MessageRecord(data);
-	// TODO: use $schemaRef to select modules
+const messageRecord = new MessageRecord(data);
 
-	updateGameStats(messageRecord);
-	updateSoftwareStats(messageRecord);
+// Check if the string "Ngorowai" appears in any relevant field
+const msg = messageRecord._message;
+const containsfilter = JSON.stringify(msg).includes("Ngorowai");
 
-	handleMessage(messageRecord);
+if (!containsfilter) return;
+
+// Only proceed if Ngorowai is present
+updateGameStats(messageRecord);
+updateSoftwareStats(messageRecord);
+handleMessage(messageRecord);
+
 };
 
 function updateGameStats(messageRecord) {
